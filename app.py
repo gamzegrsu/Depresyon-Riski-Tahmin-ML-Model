@@ -47,14 +47,14 @@ st.markdown(
     <style>
     /* Genel sayfa arka planı */
     .main {
-        background: linear-gradient(135deg, #ede7f6 0%, #d1c4e9 100%);
-        color: #1a237e; /* Yazıların genel rengi (koyu mavi) */
+        background: linear-gradient(135deg, #d1c4e9 0%, #ede7f6 100%);
+        color: #1a237e;
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
 
     /* Başlık renk ve hizalama */
     h1, h2, h3 {
-        color: #4a148c; /* Koyu mor */
+        color: #4a148c;
         text-align: center;
         font-weight: bold;
     }
@@ -75,18 +75,22 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
-        background-color: #4a148c;
+        background-color: #512da8;
         color: #fff;
     }
 
     /* Slider track renk */
     .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #7b1fa2 0%, #ba68c8 100%);
+        background: linear-gradient(90deg, #8e24aa 0%, #ce93d8 100%);
     }
 
-    /* Slider boş kısmın arka planı */
-    .stSlider > div[data-baseweb="slider"] > div > div:nth-child(1) {
-        background-color: #d1c4e9 !important;
+    /* Slider üzerindeki numaralar (etiketler) */
+    .stSlider span {
+        background-color: black !important;
+        color: white !important;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-weight: bold;
     }
 
     /* Seçim kutuları */
@@ -99,8 +103,6 @@ st.markdown(
     .stAlert > div {
         border-radius: 10px;
         font-family: 'Comic Sans MS', cursive, sans-serif;
-        font-weight: bold;
-        color: #1a237e;
     }
     </style>
     """,
@@ -111,12 +113,12 @@ st.markdown(
 st.markdown("<h2>🧠 Depresyon Riski Tahmin Uygulaması</h2>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Kullanıcı girdileri kutucukları ve sliderlar
+# Kullanıcı girdileri
 with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        yas = st.number_input("👶 Yaş", min_value=10, max_value=100, value=30, help="Yaşınızı girin")
+        yas = st.number_input("👶 Yaş", min_value=10, max_value=100, value=30)
         cinsiyet = st.selectbox("🚻 Cinsiyet", list(cinsiyet_map.keys()))
         uyku = st.slider("💤 Uyku Süresi (Saat)", 0.0, 12.0, 7.0)
         egzersiz = st.slider("🏃 Egzersiz Sıklığı (Hafta)", 0, 14, 3)
@@ -132,21 +134,20 @@ with st.container():
 
 st.markdown("---")
 
+# Tahmin Butonu
 if st.button("Tahmin Et 🧪"):
     stres_tersten = 11 - stres
-    input_array = np.array([[
-        yas,
-        cinsiyet_map[cinsiyet],
-        uyku,
-        egzersiz,
-        ekran,
-        istah_map[istah],
-        stres_tersten,
-        nabiz,
-        sigara_map[sigara],
-        alkol_map[alkol],
-        mental_saglik
-    ]])
+    input_array = np.array([[yas,
+                             cinsiyet_map[cinsiyet],
+                             uyku,
+                             egzersiz,
+                             ekran,
+                             istah_map[istah],
+                             stres_tersten,
+                             nabiz,
+                             sigara_map[sigara],
+                             alkol_map[alkol],
+                             mental_saglik]])
     input_scaled = scaler.transform(input_array)
     prediction = model.predict(input_scaled)[0]
     prob = model.predict_proba(input_scaled)[0][prediction]
