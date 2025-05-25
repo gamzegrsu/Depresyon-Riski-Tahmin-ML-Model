@@ -75,7 +75,7 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
-        background-color: #d81b60;
+        background-color: #e0e0e0;
         color: #fff;
     }
 
