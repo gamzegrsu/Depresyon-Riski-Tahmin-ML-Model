@@ -67,7 +67,7 @@ st.markdown(
 
     /* Buton stilleri */
     div.stButton > button:first-child {
-        background-color: #ec407a;
+        background-color: #6a1b9a;
         color: white;
         font-weight: bold;
         border-radius: 12px;
