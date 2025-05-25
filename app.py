@@ -41,28 +41,28 @@ Lütfen kendi durumunuza en uygun skoru seçin.
 ---
 """, unsafe_allow_html=True)
 
-# Arka plan ve tema için CSS
+# Arka plan ve tema için CSS (mor yazılar artık beyaz)
 st.markdown(
     """
     <style>
     /* Genel sayfa arka planı */
     .main {
-        background: linear-gradient(135deg, #d1c4e9 0%, #ede7f6 100%);
-        color: #1a237e;
+        background: linear-gradient(135deg, #7e57c2 0%, #512da8 100%);
+        color: white;
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
 
-    /* Başlık renk ve hizalama */
+    /* Başlıklar */
     h1, h2, h3 {
-        color: #4a148c;
+        color: white !important;
         text-align: center;
         font-weight: bold;
     }
 
-    /* Slider ve input başlıkları */
-    label {
-        color: #4a148c !important;
-        font-weight: bold !important;
+    /* Etiket ve slider başlıkları */
+    label, .stSelectbox label, .stSlider label {
+        color: white !important;
+        font-weight: bold;
     }
 
     /* Buton stilleri */
@@ -84,7 +84,7 @@ st.markdown(
         background: linear-gradient(90deg, #8e24aa 0%, #ce93d8 100%);
     }
 
-    /* Slider üzerindeki numaralar (etiketler) */
+    /* Slider üzerindeki numaralar */
     .stSlider span {
         background-color: black !important;
         color: white !important;
@@ -93,9 +93,9 @@ st.markdown(
         font-weight: bold;
     }
 
-    /* Seçim kutuları */
+    /* Seçim kutularındaki yazı */
     .stSelectbox > div > div {
-        color: #4a148c;
+        color: white !important;
         font-weight: bold;
     }
 
