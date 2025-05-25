@@ -41,11 +41,11 @@ Lütfen kendi durumunuza en uygun skoru seçin.
 ---
 """, unsafe_allow_html=True)
 
-# Arka plan ve tema için CSS (mor yazılar artık beyaz)
+# Tema ve stiller (kırmızı ve mor yazılar beyaz oldu)
 st.markdown(
     """
     <style>
-    /* Genel sayfa arka planı */
+    /* Sayfa genel arka plan ve yazılar */
     .main {
         background: linear-gradient(135deg, #7e57c2 0%, #512da8 100%);
         color: white;
@@ -65,26 +65,13 @@ st.markdown(
         font-weight: bold;
     }
 
-    /* Buton stilleri */
-    div.stButton > button:first-child {
-        background-color: #6a1b9a;
-        color: white;
+    /* Seçim kutularının içi */
+    .stSelectbox > div > div {
+        color: white !important;
         font-weight: bold;
-        border-radius: 12px;
-        padding: 10px 24px;
-        transition: background-color 0.3s ease;
-    }
-    div.stButton > button:first-child:hover {
-        background-color: #512da8;
-        color: #fff;
     }
 
-    /* Slider track renk */
-    .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #8e24aa 0%, #ce93d8 100%);
-    }
-
-    /* Slider üzerindeki numaralar */
+    /* Slider üzerindeki değer numaraları */
     .stSlider span {
         background-color: black !important;
         color: white !important;
@@ -93,23 +80,39 @@ st.markdown(
         font-weight: bold;
     }
 
-    /* Seçim kutularındaki yazı */
-    .stSelectbox > div > div {
+    /* Buton stili */
+    div.stButton > button:first-child {
+        background-color: #6a1b9a;
+        color: white;
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 10px 24px;
+        transition: background-color 0.3s ease;
+    }
+
+    div.stButton > button:first-child:hover {
+        background-color: #512da8;
+        color: white;
+    }
+
+    /* Uyarı ve bilgi kutularında beyaz yazı */
+    .stAlert {
         color: white !important;
+        background-color: rgba(255,255,255,0.1) !important;
+        border-radius: 12px;
         font-weight: bold;
     }
 
-    /* Info ve error mesajları */
-    .stAlert > div {
-        border-radius: 10px;
-        font-family: 'Comic Sans MS', cursive, sans-serif;
+    /* Tüm markdown içeriği */
+    .markdown-text-container {
+        color: white !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Sayfa başlığı
+# Giriş başlığı
 st.markdown("<h2>🧠 Depresyon Riski Tahmin Uygulaması</h2>", unsafe_allow_html=True)
 st.markdown("---")
 
@@ -158,4 +161,5 @@ if st.button("Tahmin Et 🧪"):
         st.info(f"💬 Destek Mesajı: {mesaj}")
     else:
         st.success(f"✅ Düşük depresyon riski. Tahmin güveni: %{prob*100:.2f}")
+
 
