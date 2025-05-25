@@ -66,8 +66,10 @@ with st.container():
 
 st.markdown("---")
 
-# Tahmin ve mesajlar
 if st.button("Tahmin Et 🧪"):
+    # Stres seviyesini ters çeviriyoruz
+    stres_tersten = 11 - stres
+
     input_array = np.array([[
         yas,
         cinsiyet_map[cinsiyet],
@@ -75,7 +77,7 @@ if st.button("Tahmin Et 🧪"):
         egzersiz,
         ekran,
         istah_map[istah],
-        stres,
+        stres_tersten,
         nabiz,
         sigara_map[sigara],
         alkol_map[alkol],
@@ -110,4 +112,5 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
