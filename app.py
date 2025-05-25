@@ -41,8 +41,67 @@ Lütfen kendi durumunuza en uygun skoru seçin.
 ---
 """, unsafe_allow_html=True)
 
-# Sayfa başlığı ve emoji
-st.markdown("<h2 style='text-align: center; color: #4CAF50;'>🧠 Depresyon Riski Tahmin Uygulaması</h2>", unsafe_allow_html=True)
+# Arka plan ve tema için CSS
+st.markdown(
+    """
+    <style>
+    /* Genel sayfa arka planı */
+    .main {
+        background: linear-gradient(135deg, #fbc7d4 0%, #f9a8d4 100%);
+        color: #4b1a44;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+
+    /* Başlık renk ve hizalama */
+    h1, h2, h3 {
+        color: #7b1fa2;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    /* Slider ve input başlıkları */
+    label {
+        color: #7b1fa2 !important;
+        font-weight: bold !important;
+    }
+
+    /* Buton stilleri */
+    div.stButton > button:first-child {
+        background-color: #ec407a;
+        color: white;
+        font-weight: bold;
+        border-radius: 12px;
+        padding: 10px 24px;
+        transition: background-color 0.3s ease;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #d81b60;
+        color: #fff;
+    }
+
+    /* Slider track renk */
+    .stSlider > div[data-baseweb="slider"] > div {
+        background: linear-gradient(90deg, #ec407a 0%, #f48fb1 100%);
+    }
+
+    /* Seçim kutuları */
+    .stSelectbox > div > div {
+        color: #7b1fa2;
+        font-weight: bold;
+    }
+
+    /* Info ve error mesajları */
+    .stAlert > div {
+        border-radius: 10px;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Sayfa başlığı
+st.markdown("<h2>🧠 Depresyon Riski Tahmin Uygulaması</h2>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Kullanıcı girdileri kutucukları ve sliderlar
@@ -55,7 +114,7 @@ with st.container():
         uyku = st.slider("💤 Uyku Süresi (Saat)", 0.0, 12.0, 7.0)
         egzersiz = st.slider("🏃 Egzersiz Sıklığı (Hafta)", 0, 14, 3)
         ekran = st.slider("📱 Günlük Ekran Süresi (Saat)", 0.0, 24.0, 4.0)
-    
+
     with col2:
         istah = st.selectbox("🍽️ İştah Seviyesi", list(istah_map.keys()))
         stres = st.slider("😰 Stres Seviyesi (1-10)", 1, 10, 5)
@@ -67,9 +126,7 @@ with st.container():
 st.markdown("---")
 
 if st.button("Tahmin Et 🧪"):
-    # Stres seviyesini ters çeviriyoruz
     stres_tersten = 11 - stres
-
     input_array = np.array([[
         yas,
         cinsiyet_map[cinsiyet],
@@ -93,24 +150,5 @@ if st.button("Tahmin Et 🧪"):
         st.info(f"💬 Destek Mesajı: {mesaj}")
     else:
         st.success(f"✅ Düşük depresyon riski. Tahmin güveni: %{prob*100:.2f}")
-
-st.markdown(
-    """
-    <style>
-    .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #4CAF50 0%, #81C784 100%);
-    }
-    .stNumberInput > label {
-        font-weight: bold;
-        color: #4CAF50;
-    }
-    .stSelectbox > label {
-        font-weight: bold;
-        color: #4CAF50;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 
