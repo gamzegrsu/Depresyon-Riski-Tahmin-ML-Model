@@ -47,21 +47,21 @@ st.markdown(
     <style>
     /* Genel sayfa arka planı */
     .main {
-        background: linear-gradient(135deg, #fbc7d4 0%, #f9a8d4 100%);
-        color: #4b1a44;
+        background: linear-gradient(135deg, #ede7f6 0%, #d1c4e9 100%);
+        color: #1a237e; /* Yazıların genel rengi (koyu mavi) */
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
 
     /* Başlık renk ve hizalama */
     h1, h2, h3 {
-        color: #7b1fa2;
+        color: #4a148c; /* Koyu mor */
         text-align: center;
         font-weight: bold;
     }
 
     /* Slider ve input başlıkları */
     label {
-        color: #7b1fa2 !important;
+        color: #4a148c !important;
         font-weight: bold !important;
     }
 
@@ -75,18 +75,23 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
-        background-color: #e0e0e0;
+        background-color: #4a148c;
         color: #fff;
     }
 
     /* Slider track renk */
     .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #ec407a 0%, #f48fb1 100%);
+        background: linear-gradient(90deg, #7b1fa2 0%, #ba68c8 100%);
+    }
+
+    /* Slider boş kısmın arka planı */
+    .stSlider > div[data-baseweb="slider"] > div > div:nth-child(1) {
+        background-color: #d1c4e9 !important;
     }
 
     /* Seçim kutuları */
     .stSelectbox > div > div {
-        color: #7b1fa2;
+        color: #4a148c;
         font-weight: bold;
     }
 
@@ -94,6 +99,8 @@ st.markdown(
     .stAlert > div {
         border-radius: 10px;
         font-family: 'Comic Sans MS', cursive, sans-serif;
+        font-weight: bold;
+        color: #1a237e;
     }
     </style>
     """,
