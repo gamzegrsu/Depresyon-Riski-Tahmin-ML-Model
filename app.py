@@ -1,73 +1,37 @@
 import streamlit as st
 import numpy as np
 import joblib
-import random
 
-# Model ve scaler yükle
-model = joblib.load("logistic_model.pkl")
+# Model ve scaler'ı yükle
+model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-# Kategori haritaları
-cinsiyet_map = {"Erkek": 0, "Kadın": 1}
-istah_map = {"Düşük": 0, "Orta": 1, "Yüksek": 2}
-sigara_map = {"Hayır": 0, "Evet": 1}
-alkol_map = {"Hayır": 0, "Evet": 1}
+# Sayfa yapılandırması
+st.set_page_config(page_title="Depresyon Riski Tahmini", layout="centered")
 
-# Destekleyici moral mesajları
-supportive_messages = [
-    "Unutmayın, bu zor günler geçecek ve siz güçleneceksiniz. 🌈",
-    "Kendinize karşı nazik olun; iyileşme zaman alır. 💖",
-    "Her küçük adım, büyük değişimlerin başlangıcıdır. 👣",
-    "Yanınızda destek olacak insanlar var, yalnız değilsiniz. 🤝",
-    "Kendinizi sevin ve değer verin; buna her zaman değersiniz. 🌟",
-    "Bugün yapabileceğiniz en iyi şey kendinize iyi bakmaktır. 🧘‍♀️",
-    "Karanlık günlerin ardından her zaman güneş doğar. ☀️"
-]
-
-# Mental sağlık skoru açıklaması
-st.markdown("""
-# 🧠 Depresyon Riski Tahmin Uygulaması
-
-### Mental Sağlık Skoru Nedir?
-
-Mental sağlık skoru, kişinin genel ruh hali ve psikolojik durumunu gösteren bir ölçektir.  
-Bu skor 0 ile 100 arasında değişir ve şu şekilde yorumlanabilir:
-
-- **0 - 30:** Düşük mental sağlık, olası ciddi stres, depresyon ya da anksiyete belirtileri  
-- **31 - 60:** Orta düzeyde mental sağlık, zaman zaman stres veya ruh hali dalgalanmaları olabilir  
-- **61 - 100:** İyi mental sağlık, pozitif ruh hali ve psikolojik denge  
-
-Lütfen kendi durumunuza en uygun skoru seçin.
----
-""", unsafe_allow_html=True)
-
-# Arka plan ve tema için CSS
+# Özel mor tema ve eğlenceli CSS
 st.markdown(
     """
     <style>
-    /* Genel sayfa arka planı */
     .main {
-        background: linear-gradient(135deg, #fbc7d4 0%, #f9a8d4 100%);
-        color: #4b1a44;
+        background: linear-gradient(135deg, #6a0dad 0%, #9c27b0 100%);
+        color: white;
         font-family: 'Comic Sans MS', cursive, sans-serif;
     }
 
-    /* Başlık renk ve hizalama */
     h1, h2, h3 {
-        color: #7b1fa2;
+        color: #e1bee7;
         text-align: center;
         font-weight: bold;
     }
 
-    /* Slider ve input başlıkları */
     label {
-        color: #7b1fa2 !important;
+        color: #e1bee7 !important;
         font-weight: bold !important;
     }
 
-    /* Buton stilleri */
     div.stButton > button:first-child {
-        background-color: #ec407a;
+        background-color: #ab47bc;
         color: white;
         font-weight: bold;
         border-radius: 12px;
@@ -75,80 +39,71 @@ st.markdown(
         transition: background-color 0.3s ease;
     }
     div.stButton > button:first-child:hover {
-        background-color: #d81b60;
+        background-color: #8e24aa;
         color: #fff;
     }
 
-    /* Slider track renk */
     .stSlider > div[data-baseweb="slider"] > div {
-        background: linear-gradient(90deg, #ec407a 0%, #f48fb1 100%);
+        background: linear-gradient(90deg, #ab47bc 0%, #ce93d8 100%);
     }
 
-    /* Seçim kutuları */
     .stSelectbox > div > div {
-        color: #7b1fa2;
+        color: #e1bee7;
         font-weight: bold;
     }
 
-    /* Info ve error mesajları */
     .stAlert > div {
         border-radius: 10px;
         font-family: 'Comic Sans MS', cursive, sans-serif;
+        color: white !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Sayfa başlığı
-st.markdown("<h2>🧠 Depresyon Riski Tahmin Uygulaması</h2>", unsafe_allow_html=True)
-st.markdown("---")
+# Bilgilendirici başlık
+st.markdown("""
+## 🌈 Mental Sağlık Skoru Rehberi:
 
-# Kullanıcı girdileri kutucukları ve sliderlar
-with st.container():
-    col1, col2 = st.columns(2)
+- **80-100** → Zihinsel sağlık çok iyi 💪
+- **60-79** → Ortalama – küçük stresler olabilir 🧘‍♀️
+- **40-59** → Dikkat edilmeli – stres ve yorgunluk artmış olabilir 😕
+- **0-39** → Zihinsel sağlık zayıf – destek önerilir ❤️‍🩹
+""")
 
-    with col1:
-        yas = st.number_input("👶 Yaş", min_value=10, max_value=100, value=30, help="Yaşınızı girin")
-        cinsiyet = st.selectbox("🚻 Cinsiyet", list(cinsiyet_map.keys()))
-        uyku = st.slider("💤 Uyku Süresi (Saat)", 0.0, 12.0, 7.0)
-        egzersiz = st.slider("🏃 Egzersiz Sıklığı (Hafta)", 0, 14, 3)
-        ekran = st.slider("📱 Günlük Ekran Süresi (Saat)", 0.0, 24.0, 4.0)
+# Başlık
+st.title("💜 Depresyon Riski Tahmin Uygulaması")
 
-    with col2:
-        istah = st.selectbox("🍽️ İştah Seviyesi", list(istah_map.keys()))
-        stres = st.slider("😰 Stres Seviyesi (1-10)", 1, 10, 5)
-        nabiz = st.number_input("❤️ Nabız", min_value=40, max_value=200, value=70)
-        sigara = st.selectbox("🚭 Sigara Kullanımı", list(sigara_map.keys()))
-        alkol = st.selectbox("🍷 Alkol Tüketimi", list(alkol_map.keys()))
-        mental_saglik = st.slider("🌟 Mental Sağlık Skoru (0-100)", 0, 100, 50)
+# Girdi alanları
+yas = st.slider("Yaş", 10, 100, 30)
+cinsiyet = st.selectbox("Cinsiyet", ["Kadın", "Erkek"])
+uyku = st.slider("Günlük Uyku Süresi (saat)", 0, 12, 7)
+egzersiz = st.slider("Haftalık Egzersiz Sıklığı", 0, 14, 3)
+ekran = st.slider("Günlük Ekran Süresi (saat)", 0, 16, 6)
+istah = st.slider("İştah Seviyesi (1-10)", 1, 10, 5)
+stres = st.slider("Stres Seviyesi (1-10)", 1, 10, 5)
+nabiz = st.slider("Nabız", 40, 120, 75)
+sigara = st.selectbox("Sigara Kullanımı", ["Evet", "Hayır"])
+alkol = st.selectbox("Alkol Tüketimi", ["Evet", "Hayır"])
+mental = st.slider("Mental Sağlık Skoru (0-100)", 0, 100, 50)
 
-st.markdown("---")
+# Dönüştürmeler
+cinsiyet_bin = 1 if cinsiyet == "Kadın" else 0
+sigara_bin = 1 if sigara == "Evet" else 0
+alkol_bin = 1 if alkol == "Evet" else 0
 
-if st.button("Tahmin Et 🧪"):
-    stres_tersten = 11 - stres
-    input_array = np.array([[
-        yas,
-        cinsiyet_map[cinsiyet],
-        uyku,
-        egzersiz,
-        ekran,
-        istah_map[istah],
-        stres_tersten,
-        nabiz,
-        sigara_map[sigara],
-        alkol_map[alkol],
-        mental_saglik
-    ]])
+# Tahmin yap
+if st.button("💡 Tahmin Et"):
+    input_array = np.array([[yas, cinsiyet_bin, uyku, egzersiz, ekran, istah, stres,
+                             nabiz, sigara_bin, alkol_bin, mental]])
     input_scaled = scaler.transform(input_array)
     prediction = model.predict(input_scaled)[0]
-    prob = model.predict_proba(input_scaled)[0][prediction]
 
     if prediction == 1:
-        st.error(f"⚠️ Yüksek depresyon riski. Tahmin güveni: %{prob*100:.2f}")
-        mesaj = random.choice(supportive_messages)
-        st.info(f"💬 Destek Mesajı: {mesaj}")
+        st.error("⚠️ Yüksek depresyon riski tespit edildi.")
+        st.markdown("💌 *Unutma, yalnız değilsin. İyi hissetmek zaman alabilir ama bu süreci birlikte aşabiliriz.*")
     else:
-        st.success(f"✅ Düşük depresyon riski. Tahmin güveni: %{prob*100:.2f}")
-
+        st.success("🎉 Düşük depresyon riski! Harika gidiyorsun.")
+        st.markdown("🌼 *Kendine iyi bakmaya devam et, sen harikasın!*")
 
